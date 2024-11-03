@@ -5,10 +5,7 @@
 .PARAMETER Git
     Installs Git and Fork if specified.
 .PARAMETER Python
-    Installs Python and Pipx if specified.
-.PARAMETER pythonVersion
-    The version of Python to install. If not specified, the latest version will be installed.
-    Uses scoop to install Python, so the version number must match scoops versioning scheme for Python (e.g. 310 for 3.10).
+    Installs uv if specified.
 
 .NOTES
     - This script requires Winget package manager.
@@ -16,8 +13,7 @@
 
 param (
     [switch]$Git,
-    [switch]$Python,
-    [string]$PythonVersion = $null
+    [switch]$Python
 )
 function CommandInstalled {
     [CmdletBinding()]
@@ -67,6 +63,24 @@ function Install-WindowsTerminal {
     }
     catch {
         Write-Warning "Failed to install Windows Terminal. Please install it manually."
+        return
+    }
+}
+function Install-Uv {
+    if ((CommandInstalled uv)) {
+        Write-Host "uv already installed, updating."
+        winget update astral-sh.uv --silent
+        return
+    }
+
+    Write-Host "Installing Windows Terminal..."
+
+    try {
+        winget install --id=astral-sh.uv  -e --silent
+        Write-Host "uv installed!"
+    }
+    catch {
+        Write-Warning "Failed to install uv. Please install it manually."
         return
     }
 }
@@ -168,25 +182,6 @@ function Install-ScoopPackage {
 }
 
 
-function Install-Python {
-    Install-ScoopBucket "versions"
-
-    if ($PythonVersion -eq $null) {
-        Write-Host "No Python version specified, installing latest version."
-        Install-ScoopPackage "python"
-        scoop reset python
-        return
-    }
-
-    Install-ScoopPackage "python$pythonVersion"
-    scoop reset "python$pythonVersion"
-}
-
-function Install-Pipx {
-    Install-ScoopPackage "pipx"
-    pipx ensurepath
-}
-
 function BootStrap {
     Install-PowerShell
     Install-WindowsTerminal
@@ -195,6 +190,7 @@ function BootStrap {
     Install-ScoopBucket "extras"
     Install-ScoopPackage "Meslo-NF"
     Install-ScoopPackage "oh-my-posh" "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json"
+    Install-ScoopPackage "chezmoi"
 
     if ($Git) {
         Install-ScoopPackage "git"
@@ -202,8 +198,7 @@ function BootStrap {
     }
 
     if ($Python) {
-        Install-Python
-        Install-Pipx
+        Install-Uv
     }
 }
 
