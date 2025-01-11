@@ -191,7 +191,6 @@ function BootStrap {
     Install-ScoopPackage "Meslo-NF"
     Install-ScoopPackage "JetBrainsMono-NF"
     Install-ScoopPackage "oh-my-posh" "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json"
-    Install-ScoopPackage "chezmoi"
 
     if ($Git) {
         Install-ScoopPackage "git"

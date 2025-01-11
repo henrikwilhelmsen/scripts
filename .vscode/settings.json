@@ -27,6 +27,7 @@
         "pydocstyle",
         "pytest",
         "Titlebar",
-        "wekyb"
+        "wekyb",
+        "Winget"
     ],
 }
