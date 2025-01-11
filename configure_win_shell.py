@@ -147,13 +147,16 @@ def update_terminal_config() -> None:
 
     # write target data to file
     with target_file.open("w", encoding="utf-8") as file:
-        json.dump(target_data, file)
+        json.dump(target_data, file, indent=2)
+
+    print(f"Updated Windows Terminal settings file: '{target_file.as_posix()}'")  # noqa: T201
 
 
 def update_powershell_profile() -> None:
     """Write settings to the PowerShell Profile.ps1 file."""
     powershell_profile = get_powershell_profile()
     powershell_profile.write_text(data=powershell_profile_data, encoding="utf-8")
+    print(f"Updated PowerShell profile: '{powershell_profile.as_posix()}'")  # noqa: T201
 
 
 def main() -> None:
