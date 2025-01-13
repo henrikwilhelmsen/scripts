@@ -23,6 +23,7 @@
         "bbwe",
         "Darcula",
         "debugpy",
+        "Gruvbox",
         "pwsh",
         "pydocstyle",
         "pytest",
