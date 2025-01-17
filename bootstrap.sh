@@ -30,6 +30,12 @@ function is_package_installed() {
     fi
 }
 
+# Update the system
+sudo apt update && sudo apt upgrade -y
+
+# Install dependencies, clang required for omp install to succeed
+sudo apt install clang -y
+
 # Install fish shell
 if is_command_installed fish --version; then
     echo -e "Fish already installed, skipping."
