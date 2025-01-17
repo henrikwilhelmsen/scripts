@@ -30,101 +30,61 @@ function is_package_installed() {
     fi
 }
 
-# https://stackoverflow.com/questions/47234947/spinner-animation-and-echo-command
-function spinner() {
-    local PROC="$1"
-    local delay="0.1"
-    tput civis # hide cursor
-    while [ -d "/proc/$PROC" ]; do
-        printf '\033[s\033[u[ / ] %s\033[u' "$str"
-        sleep "$delay"
-        printf '\033[s\033[u[ — ] %s\033[u' "$str"
-        sleep "$delay"
-        printf '\033[s\033[u[ \ ] %s\033[u' "$str"
-        sleep "$delay"
-        printf '\033[s\033[u[ | ] %s\033[u' "$str"
-        sleep "$delay"
-    done
-    printf '\033[s\033[u%*s\033[u\033[0m' $((${#str} + 6)) " " # return to normal
-    tput cnorm                                                 # restore cursor
-    return 0
-}
+# Install fish shell
+if is_command_installed fish --version; then
+    echo -e "Fish already installed, skipping."
+else
+    echo "Installing Fish..."
 
-function install_fish() {
+    function _install_fish() {
+        sudo apt-add-repository -y ppa:fish-shell/release-3
+        sudo apt update && sudo apt -y install fish
+    }
+
+    _install_fish >/dev/null 2>&1 # Suppress command output
+
     if is_command_installed fish --version; then
-        echo -e "Fish already installed, skipping."
-        return 0
+        echo -e "${GREEN}Fish installed!${NC}"
     else
-        echo "Installing Fish..."
-
-        function _install_fish() {
-            sudo apt-add-repository -y ppa:fish-shell/release-3
-            sudo apt update && sudo apt -y install fish
-        }
-
-        _install_fish >/dev/null 2>&1 # Suppress command output
-
-        if is_command_installed fish --version; then
-            echo -e "${GREEN}Fish installed!${NC}"
-            return 0
-        else
-            echo -e "${RED}Fish installation failed, command not found${NC}"
-            return 1
-        fi
+        echo -e "${RED}Fish installation failed, command not found${NC}"
     fi
-}
+fi
 
-function install_homebrew() {
+# Install homebrew
+if is_command_installed brew --version; then
+    # skip if already installed
+    echo -e "Homebrew already installed, skipping."
+else
+    # run installer
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # add to path and .bashrc
+    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
+    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
+
     if is_command_installed brew --version; then
-        echo -e "Homebrew already installed, skipping."
-        return 0
+        echo -e "${GREEN}Homebrew installed!${NC}"
     else
-        echo "Installing Homebrew..."
-        function _install_homebrew() {
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-            # shellcheck disable=SC2016
-            echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> "$HOME/.profile"
-            # shellcheck source=/dev/null
-            source "$HOME/.profile"
-        }
-
-        _install_homebrew >/dev/null 2>&1 # Suppress command output
-
-        if is_command_installed brew --version; then
-            echo -e "${GREEN}Homebrew installed!${NC}"
-            return 0
-        else
-            echo -e "${RED}Homebrew installation failed, command not found${NC}"
-            return 1
-        fi
+        echo -e "${RED}Homebrew installation failed, command not found${NC}"
     fi
-}
+fi
 
 # install oh-my-posh
-function install_omp() {
+if is_command_installed oh-my-posh --version; then
+    echo -e "oh-my-posh already installed, skipping."
+elif ! is_command_installed brew --version; then
+    echo -e "Homebrew install not found, unable install oh-my-posh."
+else
+    echo "Installing oh-my-posh..."
+    brew install jandedobbeleer/oh-my-posh/oh-my-posh
+
     if is_command_installed oh-my-posh --version; then
-        echo -e "oh-my-posh already installed, skipping."
-        return 0
-    elif ! is_command_installed brew --version; then
-        echo -e "Homebrew install not found, unable to continue oh-my-posh install."
-        return 1
+        echo -e "${GREEN}oh-my-posh installed!${NC}"
     else
-        echo "Installing oh-my-posh..."
-        function _install_omp() {
-            brew install jandedobbeleer/oh-my-posh/oh-my-posh
-        }
-
-        _install_omp >/dev/null 2>&1 # Suppress command output
-
-        if is_command_installed oh-my-posh --version; then
-            echo -e "${GREEN}oh-my-posh installed!${NC}"
-            return 0
-        else
-            echo -e "${RED}oh-my-posh installation failed, command not found${NC}"
-            return 1
-        fi
+        echo -e "${RED}oh-my-posh installation failed, command not found${NC}"
     fi
-}
+fi
 
 # configure fish shell
 # shellcheck disable=SC2016
@@ -153,42 +113,22 @@ if test -e /home/linuxbrew/.linuxbrew/bin/oh-my-posh
     oh-my-posh init fish --config $(brew --prefix oh-my-posh)/themes/negligible.omp.json | source
 end
 '
+echo "Setting up fish shell configuration..."
 
-install_fish_config() {
-    echo "Setting up fish shell configuration..."
+fish_config_dir="$HOME/.config/fish"
+fish_config_file="$fish_config_dir/config.fish"
 
-    local fish_config_dir="$HOME/.config/fish"
-    local fish_config_file="$fish_config_dir/config.fish"
+# create fish config file if it does not exist
+if [ ! -d "$fish_config_dir" ]; then
+    mkdir -p "$fish_config_dir"
+fi
+if [ ! -f "$fish_config_file" ]; then
+    touch "$fish_config_file"
+fi
 
-    # create fish config file if it does not exist
-    if [ ! -d "$fish_config_dir" ]; then
-        mkdir -p "$fish_config_dir"
-    fi
-    if [ ! -f "$fish_config_file" ]; then
-        touch "$fish_config_file"
-    fi
+# write config data to file
+if ! echo "$fish_config_data" > ~/.config/fish/config.fish; then
+    echo -e "${RED}Failed to write fish configuration${NC}"
+fi
 
-    # write config data to file
-    if ! echo "$fish_config_data" > ~/.config/fish/config.fish; then
-        echo -e "${RED}Failed to write fish configuration${NC}"
-        return 1
-    fi
-
-    echo -e "${GREEN}Fish shell configuration installed successfully${NC}"
-    return 0
-}
-
-
-# Define the install functions to run
-install_functions=(
-    "install_fish"
-    "install_homebrew"
-    "install_omp"
-    "install_fish_config"
-)
-
-# Run the commands in a loop with a spinner
-for cmd in "${install_functions[@]}"; do
-    $cmd &
-    spinner $!
-done
+echo -e "${GREEN}Fish shell configuration installed successfully${NC}"
