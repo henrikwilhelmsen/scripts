@@ -22,7 +22,7 @@ win_terminal_data = {
     "profiles": {
         "defaults": {
             "adjustIndistinguishableColors": "always",
-            "colorScheme": "GitHub Dark",
+            "colorScheme": "GruvboxDark",
             "cursorShape": "filledBox",
             "experimental.retroTerminalEffect": False,
             "font": {
@@ -83,11 +83,10 @@ win_terminal_data = {
         },
     ],
 }
-
-powershell_profile_data = """oh-my-posh --init --shell pwsh --config "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/negligible.omp.json" | Invoke-Expression
+powershell_profile_data = """oh-my-posh --init --shell pwsh --config "$env:POSH_THEMES_PATH/negligible.omp.json" | Invoke-Expression
 
 Import-Module -Name Terminal-Icons
-Import-Module PSReadLine
+Import-Module -Name PSReadLine
 
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
