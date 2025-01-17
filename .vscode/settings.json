@@ -1,34 +1,37 @@
 {
-    "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.fixAll": "explicit"
-        }
-    },
-    "ruff.enable": true,
-    "ruff.fixAll": true,
-    "ruff.organizeImports": true,
-    "editor.rulers": [
-        88,
-        120
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.analysis.typeCheckingMode": "basic",
-    "cSpell.words": [
-        "bbwe",
-        "Darcula",
-        "debugpy",
-        "Gruvbox",
-        "pwsh",
-        "pydocstyle",
-        "pytest",
-        "Titlebar",
-        "wekyb",
-        "Winget"
-    ],
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    88,
+    120
+  ],
+  "shellcheck.enable": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "ruff.enable": true,
+  "ruff.fixAll": true,
+  "ruff.organizeImports": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "cSpell.words": [
+    "bbwe",
+    "civis",
+    "cnorm",
+    "Darcula",
+    "debugpy",
+    "Gruvbox",
+    "pwsh",
+    "pydocstyle",
+    "pytest",
+    "Titlebar",
+    "wekyb",
+    "Winget"
+  ],
 }
