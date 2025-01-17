@@ -99,6 +99,8 @@ if status --is-login
     set -gx PATH /usr/local/bin $PATH
 end
 
+alias ll="ls -al"
+
 # setup homebrew, see https://github.com/orgs/Homebrew/discussions/4412#discussioncomment-8651316
 if test -d /home/linuxbrew/.linuxbrew # Linux
     set -gx HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"
@@ -118,6 +120,7 @@ fish_add_path -gP "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin";
 if test -e /home/linuxbrew/.linuxbrew/bin/oh-my-posh
     oh-my-posh init fish --config $(brew --prefix oh-my-posh)/themes/negligible.omp.json | source
 end
+
 '
 echo "Setting up fish shell configuration..."
 
