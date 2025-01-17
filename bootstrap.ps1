@@ -66,6 +66,18 @@ function Install-WindowsTerminal {
         return
     }
 }
+function Install-TerminalIcons {
+    Write-Host "Installing Terminal Icons..."
+
+    try {
+        Install-Module -Name Terminal-Icons -Repository PSGallery -Force
+        Write-Host "Terminal Icons installed!"
+    }
+    catch {
+        Write-Warning "Failed to install Terminal Icons. Please install it manually."
+        return
+    }
+}
 function Install-Uv {
     if ((CommandInstalled uv)) {
         Write-Host "uv already installed, updating."
@@ -185,10 +197,10 @@ function Install-ScoopPackage {
 function BootStrap {
     Install-PowerShell
     Install-WindowsTerminal
+    Install-TerminalIcons
     Install-Scoop
     Install-ScoopBucket "nerd-fonts"
     Install-ScoopBucket "extras"
-    Install-ScoopPackage "Meslo-NF"
     Install-ScoopPackage "JetBrainsMono-NF"
     Install-ScoopPackage "oh-my-posh" "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json"
 
