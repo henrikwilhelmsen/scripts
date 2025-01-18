@@ -204,7 +204,7 @@ function BootStrap {
     Install-ScoopPackage "Mononoki-NF"
     Install-ScoopPackage "FiraCode-NF"
     Install-ScoopPackage "CascadiaCode-NF"
-    Install-ScoopPackage "MesloLGM-NF"
+    Install-ScoopPackage "Meslo-NF"
     Install-ScoopPackage "JetBrainsMono-NF"
     Install-ScoopPackage "oh-my-posh" "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json"
 
