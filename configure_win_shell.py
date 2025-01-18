@@ -8,6 +8,20 @@ import json
 from pathlib import Path
 from subprocess import check_output
 
+OMP_THEME = "negligible"
+WIN_TERMINAL_THEME = "Monokai Pro"
+WIN_TERMINAL_FONT = "CaskaydiaCove Nerd Font"
+
+powershell_profile_data = f"""oh-my-posh --init --shell pwsh --config "$env:POSH_THEMES_PATH/{OMP_THEME}.omp.json" | Invoke-Expression
+
+Import-Module -Name Terminal-Icons
+Import-Module -Name PSReadLine
+
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -EditMode Windows
+"""  # noqa: E501
+
 win_terminal_data = {
     "application": {
         "alwaysShowNotificationIcon": False,
@@ -22,11 +36,11 @@ win_terminal_data = {
     "profiles": {
         "defaults": {
             "adjustIndistinguishableColors": "always",
-            "colorScheme": "GruvboxDark",
+            "colorScheme": WIN_TERMINAL_THEME,
             "cursorShape": "filledBox",
             "experimental.retroTerminalEffect": False,
             "font": {
-                "face": "JetBrainsMono Nerd Font",
+                "face": WIN_TERMINAL_FONT,
                 "size": 16,
             },
             "opacity": 90,
@@ -36,62 +50,74 @@ win_terminal_data = {
     },
     "schemes": [
         {
-            "name": "GruvboxDark",
-            "black": "#282828",
-            "red": "#cc241d",
-            "green": "#98971a",
-            "yellow": "#d79921",
-            "blue": "#458588",
-            "purple": "#b16286",
-            "cyan": "#689d6a",
-            "white": "#a89984",
-            "brightBlack": "#928374",
-            "brightRed": "#fb4934",
-            "brightGreen": "#b8bb26",
-            "brightYellow": "#fabd2f",
-            "brightBlue": "#83a598",
-            "brightPurple": "#d3869b",
-            "brightCyan": "#8ec07c",
-            "brightWhite": "#ebdbb2",
-            "background": "#282828",
-            "foreground": "#ebdbb2",
-            "selectionBackground": "#665c54",
-            "cursorColor": "#ebdbb2",
+            "name": "Monokai Pro",
+            "black": "#403e41",
+            "red": "#ff6188",
+            "green": "#a9dc76",
+            "yellow": "#ffd866",
+            "blue": "#fc9867",
+            "purple": "#ab9df2",
+            "cyan": "#78dce8",
+            "white": "#fcfcfa",
+            "brightBlack": "#727072",
+            "brightRed": "#ff6188",
+            "brightGreen": "#a9dc76",
+            "brightYellow": "#ffd866",
+            "brightBlue": "#fc9867",
+            "brightPurple": "#ab9df2",
+            "brightCyan": "#78dce8",
+            "brightWhite": "#fcfcfa",
+            "background": "#403e41",
+            "foreground": "#fcfcfa",
+            "selectionBackground": "#fcfcfa",
+            "cursorColor": "#fcfcfa",
         },
         {
-            "name": "GitHub Dark",
+            "name": "Monokai Pro (Filter Octagon)",
             "black": "#000000",
-            "red": "#f78166",
-            "green": "#56d364",
-            "yellow": "#e3b341",
-            "blue": "#6ca4f8",
-            "purple": "#db61a2",
-            "cyan": "#2b7489",
-            "white": "#ffffff",
-            "brightBlack": "#4d4d4d",
-            "brightRed": "#f78166",
-            "brightGreen": "#56d364",
-            "brightYellow": "#e3b341",
-            "brightBlue": "#6ca4f8",
-            "brightPurple": "#db61a2",
-            "brightCyan": "#2b7489",
-            "brightWhite": "#ffffff",
-            "background": "#101216",
-            "foreground": "#8b949e",
-            "selectionBackground": "#3b5070",
-            "cursorColor": "#c9d1d9",
+            "red": "#d81e00",
+            "green": "#5ea702",
+            "yellow": "#cfae00",
+            "blue": "#427ab3",
+            "purple": "#89658e",
+            "cyan": "#00a7aa",
+            "white": "#dbded8",
+            "brightBlack": "#686a66",
+            "brightRed": "#f54235",
+            "brightGreen": "#99e343",
+            "brightYellow": "#fdeb61",
+            "brightBlue": "#84b0d8",
+            "brightPurple": "#bc94b7",
+            "brightCyan": "#37e6e8",
+            "brightWhite": "#f1f1f0",
+            "background": "#282a3a",
+            "foreground": "#eaf2f1",
+        },
+        {
+            "name": "Monokai Pro (Filter Ristretto)",
+            "black": "#403838",
+            "red": "#FD6883",
+            "green": "#ADDA78",
+            "yellow": "#F9CC6C",
+            "blue": "#F38D70",
+            "purple": "#A8A9EB",
+            "cyan": "#85DACC",
+            "white": "#FFF1F3",
+            "brightBlack": "#72696A",
+            "brightRed": "#FD6883",
+            "brightGreen": "#ADDA78",
+            "brightYellow": "#F9CC6C",
+            "brightBlue": "#F38D70",
+            "brightPurple": "#A8A9EB",
+            "brightCyan": "#85DACC",
+            "brightWhite": "#FFF1F3",
+            "background": "#2C2525",
+            "foreground": "#FFF1F3",
+            "selectionBackground": "#C3B7B8",
+            "cursorColor": "#FFF1F3",
         },
     ],
 }
-powershell_profile_data = """oh-my-posh --init --shell pwsh --config "$env:POSH_THEMES_PATH/negligible.omp.json" | Invoke-Expression
-
-Import-Module -Name Terminal-Icons
-Import-Module -Name PSReadLine
-
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -EditMode Windows
-"""  # noqa: E501
 
 
 def get_powershell_profile() -> Path:

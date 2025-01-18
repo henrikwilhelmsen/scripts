@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Utility script to bootstrap a Windows pc with developer tools with Winget and Scoop. 
+    Utility script to bootstrap a Windows pc with developer tools with Winget and Scoop.
     Updates tools if they are already installed.
 .PARAMETER Git
     Installs Git and Fork if specified.
@@ -201,6 +201,10 @@ function BootStrap {
     Install-Scoop
     Install-ScoopBucket "nerd-fonts"
     Install-ScoopBucket "extras"
+    Install-ScoopPackage "Mononoki-NF"
+    Install-ScoopPackage "FiraCode-NF"
+    Install-ScoopPackage "CascadiaCode-NF"
+    Install-ScoopPackage "MesloLGM-NF"
     Install-ScoopPackage "JetBrainsMono-NF"
     Install-ScoopPackage "oh-my-posh" "https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json"
 
